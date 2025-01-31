@@ -1,0 +1,11 @@
+spring:
+  application:
+    name: WHEEL-INSPECTION
+  cloud:
+    config:
+      label: main
+  config:
+    import: configserver:http://localhost:8086
+server:
+  servlet:
+    context-path: /wheelinspection

@@ -1,0 +1,9 @@
+com\wheelinspection\controller\BreakdownHistoryController.class
+com\wheelinspection\model\WheelInspection.class
+com\wheelinspection\WheelInspectionAPIApplication.class
+com\wheelinspection\entity\BreakdownHistory.class
+com\wheelinspection\repository\WheelInspectionRepository.class
+com\wheelinspection\service\BreakdownHistoryService.class
+com\wheelinspection\repository\BreakdownHistoryRepository.class
+com\wheelinspection\service\WheelInspectionService.class
+com\wheelinspection\controller\WheelInspectionController.class
