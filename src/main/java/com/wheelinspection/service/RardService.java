@@ -1,8 +1,8 @@
 package com.wheelinspection.service;
 
-import com.wheelinspection.entity.Machine;
 import com.wheelinspection.entity.PreInspectionRecord;
-import com.wheelinspection.repository.PreInspectionRecordRepository;
+import com.wheelinspection.entity.Rard;
+import com.wheelinspection.repository.RardRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -11,23 +11,23 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class PreInspectionRecordService {
+public class RardService {
     @Autowired
-    private PreInspectionRecordRepository repository;
+    private RardRepository repository;
 
-    public List<PreInspectionRecord> getAllRecords() {
+    public List<Rard> getAllRecords() {
         return repository.findAll();
     }
 
-    public Optional<PreInspectionRecord> getRecordById(Long id) {
+    public Optional<Rard> getRecordById(Long id) {
         return repository.findById(id);
     }
 
-    public PreInspectionRecord createRecord(PreInspectionRecord record) {
+    public Rard createRecord(Rard record) {
         return repository.save(record);
     }
 
-    public PreInspectionRecord updateRecord(Long id, PreInspectionRecord updatedRecord) {
+    public Rard updateRecord(Long id, Rard updatedRecord) {
         if (repository.existsById(id)) {
             updatedRecord.setId(id);
             return repository.save(updatedRecord);
@@ -37,11 +37,12 @@ public class PreInspectionRecordService {
 
     public String deleteRecord(Long id) {
         repository.deleteById(id);
-        return "Delete successfully";
+        return "delete successfully";
     }
 
 
-    public Page<PreInspectionRecord> getPaginatedData(String search, Pageable pageable) {
+
+    public Page<Rard> getPaginatedData(String search, Pageable pageable) {
         return repository.searchByPlantNnoNative(search, pageable);
     }
 }

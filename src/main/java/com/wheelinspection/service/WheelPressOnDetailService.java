@@ -1,8 +1,11 @@
 package com.wheelinspection.service;
 
+import com.wheelinspection.entity.WheelPoh;
 import com.wheelinspection.entity.WheelPressOnDetail;
 import com.wheelinspection.repository.WheelPressOnDetailRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
@@ -32,7 +35,12 @@ public class WheelPressOnDetailService {
         return null;
     }
 
-    public void deleteRecord(Long id) {
+    public String deleteRecord(Long id) {
         repository.deleteById(id);
+        return "delete successfully";
+    }
+
+    public Page<WheelPressOnDetail> getPaginatedData(String search, Pageable pageable) {
+        return repository.searchByPlantNnoNative(search, pageable);
     }
 }

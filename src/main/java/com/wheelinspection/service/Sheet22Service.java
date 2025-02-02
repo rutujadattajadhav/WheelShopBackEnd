@@ -1,8 +1,8 @@
 package com.wheelinspection.service;
 
-import com.wheelinspection.entity.Machine;
-import com.wheelinspection.entity.PreInspectionRecord;
-import com.wheelinspection.repository.PreInspectionRecordRepository;
+import com.wheelinspection.entity.Rard;
+import com.wheelinspection.entity.Sheet22;
+import com.wheelinspection.repository.Sheet22Repository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -11,23 +11,23 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class PreInspectionRecordService {
+public class Sheet22Service {
     @Autowired
-    private PreInspectionRecordRepository repository;
+    private Sheet22Repository repository;
 
-    public List<PreInspectionRecord> getAllRecords() {
+    public List<Sheet22> getAllRecords() {
         return repository.findAll();
     }
 
-    public Optional<PreInspectionRecord> getRecordById(Long id) {
+    public Optional<Sheet22> getRecordById(Long id) {
         return repository.findById(id);
     }
 
-    public PreInspectionRecord createRecord(PreInspectionRecord record) {
+    public Sheet22 createRecord(Sheet22 record) {
         return repository.save(record);
     }
 
-    public PreInspectionRecord updateRecord(Long id, PreInspectionRecord updatedRecord) {
+    public Sheet22 updateRecord(Long id, Sheet22 updatedRecord) {
         if (repository.existsById(id)) {
             updatedRecord.setId(id);
             return repository.save(updatedRecord);
@@ -37,11 +37,11 @@ public class PreInspectionRecordService {
 
     public String deleteRecord(Long id) {
         repository.deleteById(id);
-        return "Delete successfully";
+        return "delete successfully";
     }
 
 
-    public Page<PreInspectionRecord> getPaginatedData(String search, Pageable pageable) {
+    public Page<Sheet22> getPaginatedData(String search, Pageable pageable) {
         return repository.searchByPlantNnoNative(search, pageable);
     }
 }

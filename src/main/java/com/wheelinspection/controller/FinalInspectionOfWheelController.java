@@ -1,8 +1,11 @@
 package com.wheelinspection.controller;
 
+import com.wheelinspection.entity.DemuBearingRejectionData;
 import com.wheelinspection.entity.FinalInspectionOfWheel;
 import com.wheelinspection.service.FinalInspectionOfWheelService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,7 +19,7 @@ public class FinalInspectionOfWheelController {
     @Autowired
     private FinalInspectionOfWheelService service;
 
-    @GetMapping
+    @GetMapping("/getAllRecord")
     public List<FinalInspectionOfWheel> getAllRecords() {
         return service.getAllRecords();
     }
@@ -39,8 +42,16 @@ public class FinalInspectionOfWheelController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteRecord(@PathVariable Long id) {
-        service.deleteRecord(id);
-        return ResponseEntity.noContent().build();
+    public String deleteRecord(@PathVariable Long id) {
+      return  service.deleteRecord(id);
+
+    }
+
+
+    @GetMapping
+    public Page<FinalInspectionOfWheel> getBreakdowns(@RequestParam(defaultValue = "") String search,
+                                                        @RequestParam(defaultValue = "0") int page,
+                                                        @RequestParam(defaultValue = "10") int size) {
+        return service.getPaginatedData(search, PageRequest.of(page, size));
     }
 }

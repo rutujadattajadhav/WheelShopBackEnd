@@ -1,8 +1,11 @@
 package com.wheelinspection.service;
 
+import com.wheelinspection.entity.Sheet22;
 import com.wheelinspection.entity.WheelPoh;
 import com.wheelinspection.repository.WheelPohRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -53,5 +56,9 @@ public class WheelPohService {
                 .orElseThrow(() -> new RuntimeException("Wheel POH not found"));
         repository.delete(detail);
         return "Delete successfully";
+    }
+
+    public Page<WheelPoh> getPaginatedData(String search, Pageable pageable) {
+        return repository.searchByPlantNnoNative(search, pageable);
     }
 }

@@ -30,4 +30,6 @@ public class WheelInspectionController {
     public WheelInspection addInspection(@RequestBody WheelInspection inspection) {
         return service.addInspection(inspection);
     }
+
+
 }

@@ -1,8 +1,11 @@
 package com.wheelinspection.controller;
 
+import com.wheelinspection.entity.Sheet22;
 import com.wheelinspection.entity.WheelPoh;
 import com.wheelinspection.service.WheelPohService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,7 +19,7 @@ public class WheelPohController {
     @Autowired
     private WheelPohService service;
 
-    @GetMapping
+    @GetMapping("/getAllDetails")
     public List<WheelPoh> getAllDetails() {
         return service.getAllDetails();
     }
@@ -40,5 +43,12 @@ public class WheelPohController {
     public String deleteDetail(@PathVariable Long id) {
         return service.deleteDetail(id);
 
+    }
+
+    @GetMapping
+    public Page<WheelPoh> getBreakdowns(@RequestParam(defaultValue = "") String search,
+                                       @RequestParam(defaultValue = "0") int page,
+                                       @RequestParam(defaultValue = "10") int size) {
+        return service.getPaginatedData(search, PageRequest.of(page, size));
     }
 }
