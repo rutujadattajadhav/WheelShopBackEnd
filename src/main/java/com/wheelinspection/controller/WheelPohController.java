@@ -37,8 +37,8 @@ public class WheelPohController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteDetail(@PathVariable Long id) {
-        service.deleteDetail(id);
-        return ResponseEntity.noContent().build();
+    public String deleteDetail(@PathVariable Long id) {
+        return service.deleteDetail(id);
+
     }
 }

@@ -48,9 +48,10 @@ public class WheelPohService {
         return repository.save(existing);
     }
 
-    public void deleteDetail(Long id) {
+    public String deleteDetail(Long id) {
         WheelPoh detail = repository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Wheel POH not found"));
         repository.delete(detail);
+        return "Delete successfully";
     }
 }
