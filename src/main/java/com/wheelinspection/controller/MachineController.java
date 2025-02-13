@@ -2,6 +2,8 @@ package com.wheelinspection.controller;
 
 import com.wheelinspection.entity.BreakdownHistory;
 import com.wheelinspection.entity.Machine;
+import com.wheelinspection.handler.ServiceException;
+import com.wheelinspection.responce.ApplicationResponce;
 import com.wheelinspection.service.MachineService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -27,28 +29,28 @@ public class MachineController {
 
     // Get a single machine by ID
     @GetMapping("/{id}")
-    public ResponseEntity<Machine> getMachineById(@PathVariable Long id) {
-        Machine machine = machineService.getMachineById(id);
+    public ResponseEntity<ApplicationResponce> getMachineById(@PathVariable Long id) throws ServiceException {
+        ApplicationResponce machine = machineService.getMachineById(id);
         return ResponseEntity.ok(machine);
     }
 
     // Add a new machine
     @PostMapping
-    public ResponseEntity<Machine> addMachine(@RequestBody Machine machine) {
-        Machine newMachine = machineService.addMachine(machine);
+    public ResponseEntity<ApplicationResponce> addMachine(@RequestBody Machine machine) throws ServiceException {
+        ApplicationResponce newMachine = machineService.addMachine(machine);
         return ResponseEntity.ok(newMachine);
     }
 
     // Update an existing machine
     @PutMapping("/{id}")
-    public ResponseEntity<Machine> updateMachine(@PathVariable Long id, @RequestBody Machine machineDetails) {
-        Machine updatedMachine = machineService.updateMachine(id, machineDetails);
+    public ResponseEntity<ApplicationResponce> updateMachine(@PathVariable Long id, @RequestBody Machine machineDetails) throws ServiceException {
+        ApplicationResponce updatedMachine = machineService.updateMachine(id, machineDetails);
         return ResponseEntity.ok(updatedMachine);
     }
 
     // Delete a machine
     @DeleteMapping("/{id}")
-    public String deleteMachine(@PathVariable Long id) {
+    public ApplicationResponce deleteMachine(@PathVariable Long id) throws ServiceException {
         return  machineService.deleteMachine(id);
 
     }

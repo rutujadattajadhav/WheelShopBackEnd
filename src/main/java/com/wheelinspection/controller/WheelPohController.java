@@ -2,6 +2,8 @@ package com.wheelinspection.controller;
 
 import com.wheelinspection.entity.Sheet22;
 import com.wheelinspection.entity.WheelPoh;
+import com.wheelinspection.handler.ServiceException;
+import com.wheelinspection.responce.ApplicationResponce;
 import com.wheelinspection.service.WheelPohService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -25,22 +27,22 @@ public class WheelPohController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<WheelPoh> getDetailById(@ PathVariable Long id) {
+    public ResponseEntity<ApplicationResponce> getDetailById(@ PathVariable Long id) throws ServiceException {
         return ResponseEntity.ok(service.getDetailById(id));
     }
 
     @PostMapping
-    public ResponseEntity<WheelPoh> addDetail(@RequestBody WheelPoh detail) {
+    public ResponseEntity<ApplicationResponce> addDetail(@RequestBody WheelPoh detail) throws ServiceException {
         return ResponseEntity.ok(service.addDetail(detail));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<WheelPoh> updateDetail(@PathVariable Long id, @RequestBody WheelPoh detail) {
+    public ResponseEntity<ApplicationResponce> updateDetail(@PathVariable Long id, @RequestBody WheelPoh detail) throws ServiceException {
         return ResponseEntity.ok(service.updateDetail(id, detail));
     }
 
     @DeleteMapping("/{id}")
-    public String deleteDetail(@PathVariable Long id) {
+    public ApplicationResponce deleteDetail(@PathVariable Long id) throws ServiceException {
         return service.deleteDetail(id);
 
     }

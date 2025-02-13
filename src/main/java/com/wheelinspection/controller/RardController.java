@@ -2,6 +2,8 @@ package com.wheelinspection.controller;
 
 import com.wheelinspection.entity.PreInspectionRecord;
 import com.wheelinspection.entity.Rard;
+import com.wheelinspection.handler.ServiceException;
+import com.wheelinspection.responce.ApplicationResponce;
 import com.wheelinspection.service.RardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -25,24 +27,24 @@ public class RardController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Rard> getRecordById(@PathVariable Long id) {
-        Optional<Rard> record = service.getRecordById(id);
-        return record.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+    public ApplicationResponce getRecordById(@PathVariable Long id) throws ServiceException {
+        ApplicationResponce record = service.getRecordById(id);
+        return record;
     }
 
     @PostMapping
-    public Rard createRecord(@RequestBody Rard record) {
+    public ApplicationResponce createRecord(@RequestBody Rard record) throws ServiceException {
         return service.createRecord(record);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Rard> updateRecord(@PathVariable Long id, @RequestBody Rard updatedRecord) {
-        Rard record = service.updateRecord(id, updatedRecord);
-        return record != null ? ResponseEntity.ok(record) : ResponseEntity.notFound().build();
+    public ApplicationResponce updateRecord(@PathVariable Long id, @RequestBody Rard updatedRecord) throws ServiceException {
+        ApplicationResponce record = service.updateRecord(id, updatedRecord);
+        return record ;
     }
 
     @DeleteMapping("/{id}")
-    public String deleteRecord(@PathVariable Long id) {
+    public ApplicationResponce deleteRecord(@PathVariable Long id) throws ServiceException {
         return  service.deleteRecord(id);
 
     }

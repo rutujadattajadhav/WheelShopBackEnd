@@ -1,8 +1,10 @@
 package com.wheelinspection.service;
 
-import com.wheelinspection.entity.AxleRejection;
 import com.wheelinspection.entity.BearingRejectionData;
+import com.wheelinspection.error.WheelInspectionError;
+import com.wheelinspection.handler.ServiceException;
 import com.wheelinspection.repository.BearingRejectionDataRepository;
+import com.wheelinspection.responce.ApplicationResponce;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -19,25 +21,53 @@ public class BearingRejectionDataService {
         return repository.findAll();
     }
 
-    public Optional<BearingRejectionData> getRecordById(Long id) {
-        return repository.findById(id);
+    public Optional<BearingRejectionData> getRecordById(Long id) throws ServiceException {
+        Optional<BearingRejectionData> bearingRejectionData=repository.findById(id);
+        if(bearingRejectionData.isPresent()){
+            return bearingRejectionData;
+        }
+        else{
+            throw new ServiceException("Record not found",90);
+        }
     }
 
-    public BearingRejectionData createRecord(BearingRejectionData record) {
-        return repository.save(record);
+    public ApplicationResponce createRecord(BearingRejectionData record) throws ServiceException {
+        BearingRejectionData bearingRejectionData=  repository.save(record);
+        if(bearingRejectionData!=null){
+            ApplicationResponce applicationResponce  =new ApplicationResponce();
+            applicationResponce.setData(bearingRejectionData);
+            return applicationResponce;
+        }else{
+            throw new ServiceException("record not save successfully",102);
+        }
+
     }
 
-    public BearingRejectionData updateRecord(Long id, BearingRejectionData updatedRecord) {
+    public ApplicationResponce updateRecord(Long id, BearingRejectionData updatedRecord) throws ServiceException {
         if (repository.existsById(id)) {
             updatedRecord.setId(id);
-            return repository.save(updatedRecord);
+            BearingRejectionData bearingRejectionData = repository.save(updatedRecord);
+            if(bearingRejectionData!=null){
+                ApplicationResponce applicationResponce =new ApplicationResponce();
+                applicationResponce.setData(bearingRejectionData);
+                return applicationResponce;
+            }else{
+                throw new ServiceException("not update successfully",108);
+            }
         }
-        return null;
+        throw new ServiceException("Record not found",4);
     }
 
-    public String deleteRecord(Long id) {
-        repository.deleteById(id);
-        return "delete successfully";
+    public ApplicationResponce deleteRecord(Long id) throws ServiceException {
+        if(repository.existsById(id)){
+            repository.deleteById(id);
+            ApplicationResponce applicationResponce =new ApplicationResponce();
+            applicationResponce.setData("delete successfully");
+            return applicationResponce;
+        }else{
+            throw new ServiceException("not delete successfully",500);
+        }
+
     }
 
     public Page<BearingRejectionData> getPaginatedData(String search, Pageable pageable) {

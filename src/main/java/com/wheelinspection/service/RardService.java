@@ -2,7 +2,9 @@ package com.wheelinspection.service;
 
 import com.wheelinspection.entity.PreInspectionRecord;
 import com.wheelinspection.entity.Rard;
+import com.wheelinspection.handler.ServiceException;
 import com.wheelinspection.repository.RardRepository;
+import com.wheelinspection.responce.ApplicationResponce;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -19,25 +21,51 @@ public class RardService {
         return repository.findAll();
     }
 
-    public Optional<Rard> getRecordById(Long id) {
-        return repository.findById(id);
+    public ApplicationResponce getRecordById(Long id) throws ServiceException {
+        if(repository.existsById(id)){
+             Optional<Rard> rard=repository.findById(id);
+             if(rard.isPresent()){
+                 ApplicationResponce applicationResponce=new ApplicationResponce();
+                 applicationResponce.setData(rard);
+                 return applicationResponce;
+             }
+        }
+        throw new ServiceException("Record not found",404);
     }
 
-    public Rard createRecord(Rard record) {
-        return repository.save(record);
+    public ApplicationResponce createRecord(Rard record) throws ServiceException {
+       Rard rard = repository.save(record);
+       if(rard!=null){
+           ApplicationResponce applicationResponce =new ApplicationResponce();
+           applicationResponce.setData("Save Successfully");
+           return applicationResponce;
+       }
+       else{
+           throw new ServiceException("not save succsfully",500);
+       }
     }
 
-    public Rard updateRecord(Long id, Rard updatedRecord) {
+    public ApplicationResponce updateRecord(Long id, Rard updatedRecord) throws ServiceException {
         if (repository.existsById(id)) {
             updatedRecord.setId(id);
-            return repository.save(updatedRecord);
+            Rard rard=repository.save(updatedRecord);
+            if(rard!=null){
+                ApplicationResponce applicationResponce =new ApplicationResponce();
+                applicationResponce.setData("update Successfully");
+                return applicationResponce;
+            }
         }
-        return null;
+        throw new ServiceException("not update successfully",500);
     }
 
-    public String deleteRecord(Long id) {
-        repository.deleteById(id);
-        return "delete successfully";
+    public ApplicationResponce deleteRecord(Long id) throws ServiceException {
+        if(repository.existsById(id)){
+            repository.deleteById(id);
+            ApplicationResponce applicationResponce =new ApplicationResponce();
+            applicationResponce.setData("update Successfully");
+            return applicationResponce;
+        }
+        throw new ServiceException("Record not found",404);
     }
 
 

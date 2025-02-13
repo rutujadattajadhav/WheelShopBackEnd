@@ -2,13 +2,17 @@ package com.wheelinspection.service;
 
 import com.wheelinspection.entity.Sheet22;
 import com.wheelinspection.entity.WheelPoh;
+import com.wheelinspection.handler.ServiceException;
+import com.wheelinspection.model.WheelInspection;
 import com.wheelinspection.repository.WheelPohRepository;
+import com.wheelinspection.responce.ApplicationResponce;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class WheelPohService {
@@ -20,18 +24,31 @@ public class WheelPohService {
         return repository.findAll();
     }
 
-    public WheelPoh getDetailById(Long id) {
-        return repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Wheel POH not found"));
+    public ApplicationResponce getDetailById(Long id) throws ServiceException {
+        if(repository.existsById(id)){
+            Optional<WheelPoh> wheelInspection =repository.findById(id);
+            if(wheelInspection.isPresent()){
+                ApplicationResponce applicationResponce =new ApplicationResponce();
+                applicationResponce.setData(wheelInspection);
+                return applicationResponce;
+            }
+        }
+        throw new ServiceException("datail not found not found",404);
     }
 
-    public WheelPoh addDetail(WheelPoh detail) {
-        return repository.save(detail);
+    public ApplicationResponce addDetail(WheelPoh detail) throws ServiceException {
+        WheelPoh wheelPoh = repository.save(detail);
+        if(wheelPoh!=null){
+            ApplicationResponce applicationResponce =new ApplicationResponce();
+            applicationResponce.setData("save Successfully");
+            return applicationResponce;
+        }
+        throw new ServiceException("not save succsfully",500);
     }
 
-    public WheelPoh updateDetail(Long id, WheelPoh detail) {
+    public ApplicationResponce updateDetail(Long id, WheelPoh detail) throws ServiceException {
         WheelPoh existing = repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Wheel POH not found"));
+                .orElseThrow(() -> new ServiceException("Wheel POH not found",404));
 
         existing.setDate(detail.getDate());
         existing.setWheelNo(detail.getWheelNo());
@@ -48,14 +65,24 @@ public class WheelPohService {
         existing.setUst(detail.getUst());
         existing.setBearing(detail.getBearing()); // New field
 
-        return repository.save(existing);
+        WheelPoh wheelPoh= repository.save(existing);
+        if(wheelPoh!=null){
+            ApplicationResponce applicationResponce=   new ApplicationResponce();
+            applicationResponce.setData("save successfully");
+            return applicationResponce;
+        }
+        throw new ServiceException("not save successfully",500);
     }
 
-    public String deleteDetail(Long id) {
-        WheelPoh detail = repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Wheel POH not found"));
-        repository.delete(detail);
-        return "Delete successfully";
+    public ApplicationResponce deleteDetail(Long id) throws ServiceException {
+        Optional<WheelPoh> detail = repository.findById(id);
+        if(detail.isPresent()){
+            repository.delete(detail.get());
+            ApplicationResponce applicationResponce =new ApplicationResponce();
+            applicationResponce.setData("delete successfully");
+            return applicationResponce;
+        }
+        throw new ServiceException("detail not found",404);
     }
 
     public Page<WheelPoh> getPaginatedData(String search, Pageable pageable) {

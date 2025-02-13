@@ -2,6 +2,8 @@ package com.wheelinspection.controller;
 
 import com.wheelinspection.entity.DemuBearingRejectionData;
 import com.wheelinspection.entity.FinalInspectionOfWheel;
+import com.wheelinspection.handler.ServiceException;
+import com.wheelinspection.responce.ApplicationResponce;
 import com.wheelinspection.service.FinalInspectionOfWheelService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -25,24 +27,24 @@ public class FinalInspectionOfWheelController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<FinalInspectionOfWheel> getRecordById(@PathVariable Long id) {
-        Optional<FinalInspectionOfWheel> record = service.getRecordById(id);
-        return record.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+    public ApplicationResponce getRecordById(@PathVariable Long id) throws ServiceException {
+        ApplicationResponce record = service.getRecordById(id);
+        return record;
     }
 
     @PostMapping
-    public FinalInspectionOfWheel createRecord(@RequestBody FinalInspectionOfWheel record) {
+    public ApplicationResponce createRecord(@RequestBody FinalInspectionOfWheel record) throws ServiceException {
         return service.createRecord(record);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<FinalInspectionOfWheel> updateRecord(@PathVariable Long id, @RequestBody FinalInspectionOfWheel updatedRecord) {
-        FinalInspectionOfWheel record = service.updateRecord(id, updatedRecord);
-        return record != null ? ResponseEntity.ok(record) : ResponseEntity.notFound().build();
+    public ApplicationResponce updateRecord(@PathVariable Long id, @RequestBody FinalInspectionOfWheel updatedRecord) throws ServiceException {
+        ApplicationResponce record = service.updateRecord(id, updatedRecord);
+        return record ;
     }
 
     @DeleteMapping("/{id}")
-    public String deleteRecord(@PathVariable Long id) {
+    public ApplicationResponce deleteRecord(@PathVariable Long id) throws ServiceException {
       return  service.deleteRecord(id);
 
     }

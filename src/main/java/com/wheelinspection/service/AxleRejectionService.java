@@ -1,8 +1,10 @@
 package com.wheelinspection.service;
 
 import com.wheelinspection.entity.AxleRejection;
-import com.wheelinspection.entity.BreakdownHistory;
+import com.wheelinspection.error.WheelInspectionError;
+import com.wheelinspection.handler.ServiceException;
 import com.wheelinspection.repository.AxleRejectionRepository;
+import com.wheelinspection.responce.ApplicationResponce;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -19,29 +21,54 @@ public class AxleRejectionService {
         return repository.findAll();
     }
 
-    public Optional<AxleRejection> getRecordById(Long id) {
-        return repository.findById(id);
+    public ApplicationResponce getRecordById(Long id) throws Exception {
+        ApplicationResponce applicationResponce   = new ApplicationResponce();
+        Optional<AxleRejection>  axleRejection=repository.findById(id);
+        if(axleRejection.isPresent()){
+            applicationResponce.setData(axleRejection.get());
+            return  applicationResponce;
+
+        }else{
+            throw new ServiceException("Axel record not found",102);
+        }
     }
 
-    public AxleRejection createRecord(AxleRejection record) {
-        return repository.save(record);
+    public ApplicationResponce createRecord(AxleRejection record) throws Exception {
+        AxleRejection axleRejection = repository.save(record);
+        if(axleRejection!=null){
+            ApplicationResponce applicationResponce  =new ApplicationResponce();
+            applicationResponce.setData(axleRejection);
+            return applicationResponce;
+        }else{
+            throw new ServiceException("record not save successfully",103);
+        }
     }
 
-    public AxleRejection updateRecord(Long id, AxleRejection updatedRecord) {
+    public ApplicationResponce updateRecord(Long id, AxleRejection updatedRecord) throws Exception {
         if (repository.existsById(id)) {
             updatedRecord.setId(id);
-            return repository.save(updatedRecord);
+            AxleRejection axleRejection = repository.save(updatedRecord);
+            if(axleRejection!=null){
+                ApplicationResponce applicationResponce  =new ApplicationResponce();
+                applicationResponce.setData(axleRejection);
+                return applicationResponce;
+            }
         }
-        return null;
+        throw new ServiceException("not updated successfully",103);
     }
 
-    public String deleteRecord(Long id) {
-
-        repository.deleteById(id);
-        return "delete successfully";
+    public ApplicationResponce deleteRecord(Long id) throws Exception {
+        if (repository.existsById(id)){
+            repository.deleteById(id);
+            ApplicationResponce applicationResponce  =new ApplicationResponce();
+            applicationResponce.setData("delete successfully");
+            return applicationResponce;
+        }else{
+          throw  new ServiceException("record not found",3);
+        }
     }
 
     public Page<AxleRejection> getPaginatedData(String search, Pageable pageable) {
-        return repository.searchByVehicleNative(search, pageable);
+        return repository.searchByVehicleNative(search,pageable);
     }
 }

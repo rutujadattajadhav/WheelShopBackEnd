@@ -1,10 +1,13 @@
 package com.wheelinspection.service;
 
+import com.wheelinspection.handler.ServiceException;
 import com.wheelinspection.model.WheelInspection;
 import com.wheelinspection.repository.WheelInspectionRepository;
+import com.wheelinspection.responce.ApplicationResponce;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class WheelInspectionService {
@@ -19,11 +22,26 @@ public class WheelInspectionService {
         return repository.findAll();
     }
 
-    public WheelInspection getInspectionById(Long id) {
-        return repository.findById(id).orElseThrow(() -> new RuntimeException("Inspection not found"));
+    public ApplicationResponce getInspectionById(Long id) throws ServiceException {
+        if(repository.existsById(id)){
+            Optional<WheelInspection> wheelInspection =repository.findById(id);
+            if(wheelInspection.isPresent()){
+                ApplicationResponce applicationResponce =new ApplicationResponce();
+                applicationResponce.setData(wheelInspection);
+                return applicationResponce;
+            }
+        }
+        throw new ServiceException("Inspection not found",404);
     }
 
-    public WheelInspection addInspection(WheelInspection inspection) {
-        return repository.save(inspection);
+    public ApplicationResponce addInspection(WheelInspection inspection) throws ServiceException {
+        WheelInspection wheelInspection  = repository.save(inspection);
+        if(wheelInspection!=null){
+            ApplicationResponce applicationResponce =new ApplicationResponce();
+            applicationResponce.setData("Save Inspection successfully");
+            return applicationResponce;
+        }
+        throw new ServiceException("not save successfully",500);
     }
+
 }

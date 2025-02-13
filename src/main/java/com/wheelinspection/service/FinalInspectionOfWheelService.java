@@ -2,7 +2,9 @@ package com.wheelinspection.service;
 
 import com.wheelinspection.entity.DemuBearingRejectionData;
 import com.wheelinspection.entity.FinalInspectionOfWheel;
+import com.wheelinspection.handler.ServiceException;
 import com.wheelinspection.repository.FinalInspectionOfWheelRepository;
+import com.wheelinspection.responce.ApplicationResponce;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -19,25 +21,49 @@ public class FinalInspectionOfWheelService {
         return repository.findAll();
     }
 
-    public Optional<FinalInspectionOfWheel> getRecordById(Long id) {
-        return repository.findById(id);
+    public ApplicationResponce getRecordById(Long id) throws ServiceException {
+        if(repository.existsById(id)){
+          Optional<FinalInspectionOfWheel> finalInspectionOfWheel = repository.findById(id);
+          if(finalInspectionOfWheel.isPresent()){
+              ApplicationResponce applicationResponce  =new ApplicationResponce();
+              applicationResponce.setData(finalInspectionOfWheel);
+              return applicationResponce;
+          }
+        }
+        throw new ServiceException("record not found",65);
     }
 
-    public FinalInspectionOfWheel createRecord(FinalInspectionOfWheel record) {
-        return repository.save(record);
+    public ApplicationResponce createRecord(FinalInspectionOfWheel record) throws ServiceException {
+        FinalInspectionOfWheel finalInspectionOfWheel  =repository.save(record);
+        if(finalInspectionOfWheel!=null){
+            ApplicationResponce applicationResponce =new ApplicationResponce();
+            applicationResponce.setData(finalInspectionOfWheel);
+            return applicationResponce;
+        }
+        throw new ServiceException("not save successfully",23);
     }
 
-    public FinalInspectionOfWheel updateRecord(Long id, FinalInspectionOfWheel updatedRecord) {
+    public ApplicationResponce updateRecord(Long id, FinalInspectionOfWheel updatedRecord) throws ServiceException {
         if (repository.existsById(id)) {
             updatedRecord.setId(id);
-            return repository.save(updatedRecord);
+            FinalInspectionOfWheel finalInspectionOfWheel  =repository.save(updatedRecord);
+            if(finalInspectionOfWheel!=null){
+                ApplicationResponce applicationResponce =new ApplicationResponce();
+                applicationResponce.setData(finalInspectionOfWheel);
+                return applicationResponce;
+            }
         }
-        return null;
+        throw new ServiceException("not update successfully",42);
     }
 
-    public String deleteRecord(Long id) {
-        repository.deleteById(id);
-        return "Delete successfully";
+    public ApplicationResponce deleteRecord(Long id) throws ServiceException {
+        if(repository.existsById(id)){
+            repository.deleteById(id);
+            ApplicationResponce applicationResponce=new ApplicationResponce();
+            applicationResponce.setData("delete successfully");
+            return applicationResponce;
+        }
+        throw new ServiceException("record not found",98);
     }
 
     public Page<FinalInspectionOfWheel> getPaginatedData(String search, Pageable pageable) {

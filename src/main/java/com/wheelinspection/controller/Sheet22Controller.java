@@ -2,6 +2,8 @@ package com.wheelinspection.controller;
 
 import com.wheelinspection.entity.Rard;
 import com.wheelinspection.entity.Sheet22;
+import com.wheelinspection.handler.ServiceException;
+import com.wheelinspection.responce.ApplicationResponce;
 import com.wheelinspection.service.Sheet22Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -25,24 +27,24 @@ public class Sheet22Controller {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Sheet22> getRecordById(@PathVariable Long id) {
-        Optional<Sheet22> record = service.getRecordById(id);
-        return record.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+    public ApplicationResponce getRecordById(@PathVariable Long id) throws ServiceException {
+        ApplicationResponce record = service.getRecordById(id);
+        return record;
     }
 
     @PostMapping
-    public Sheet22 createRecord(@RequestBody Sheet22 record) {
+    public ApplicationResponce createRecord(@RequestBody Sheet22 record) throws ServiceException {
         return service.createRecord(record);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Sheet22> updateRecord(@PathVariable Long id, @RequestBody Sheet22 updatedRecord) {
-        Sheet22 record = service.updateRecord(id, updatedRecord);
+    public ResponseEntity<ApplicationResponce> updateRecord(@PathVariable Long id, @RequestBody Sheet22 updatedRecord) throws ServiceException {
+        ApplicationResponce record = service.updateRecord(id, updatedRecord);
         return record != null ? ResponseEntity.ok(record) : ResponseEntity.notFound().build();
     }
 
     @DeleteMapping("/{id}")
-    public String deleteRecord(@PathVariable Long id) {
+    public ApplicationResponce deleteRecord(@PathVariable Long id) throws ServiceException {
        return service.deleteRecord(id);
 
     }

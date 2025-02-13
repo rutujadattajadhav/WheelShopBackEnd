@@ -15,6 +15,7 @@ public interface AxleRejectionRepository extends JpaRepository<AxleRejection, Lo
     @Query(value = "SELECT * FROM axle_rejection WHERE id LIKE CONCAT('%', :search, '%')", nativeQuery = true)
     Page<AxleRejection> searchByVehicleNative(@Param("search") String search, Pageable pageable);
 
+
     //Page<AxleRejection> findAll(Pageable pageable);
 
 

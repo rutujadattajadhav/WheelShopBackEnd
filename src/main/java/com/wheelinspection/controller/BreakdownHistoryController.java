@@ -1,7 +1,11 @@
 package com.wheelinspection.controller;
 
 import com.wheelinspection.entity.BreakdownHistory;
+import com.wheelinspection.handler.ServiceException;
+import com.wheelinspection.handler.ValidationException;
+import com.wheelinspection.responce.ApplicationResponce;
 import com.wheelinspection.service.BreakdownHistoryService;
+import com.wheelinspection.validation.breakDownHistoryValidation.BreakDownHistorySaveValidation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -17,33 +21,39 @@ public class BreakdownHistoryController {
     @Autowired
     private BreakdownHistoryService service;
 
+    @Autowired
+    private BreakDownHistorySaveValidation saveValidation;
+
     @GetMapping(value = "/allRecords")
     public List<BreakdownHistory> getAllRecords() {
         return service.getAllRecords();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<BreakdownHistory> getRecordById(@PathVariable Long id) {
-        BreakdownHistory record = service.getRecordById(id);
+    public ResponseEntity<ApplicationResponce> getRecordById(@PathVariable Long id) throws ServiceException {
+        ApplicationResponce record = service.getRecordById(id);
         if (record != null) {
             return ResponseEntity.ok(record);
         }
         return ResponseEntity.notFound().build();
     }
 
+
     @PostMapping
-    public BreakdownHistory addOrUpdateRecord(@RequestBody BreakdownHistory record) {
+    public ApplicationResponce addOrUpdateRecord(@RequestBody BreakdownHistory record) throws ServiceException, ValidationException {
+        saveValidation.validate(record);
         return service.addOrUpdateRecord(record);
     }
 
     @PutMapping("/{id}")
-    public BreakdownHistory updateRecord(@PathVariable Long id, @RequestBody BreakdownHistory record) {
+    public ApplicationResponce updateRecord(@PathVariable Long id, @RequestBody BreakdownHistory record) throws ServiceException, ValidationException {
+        saveValidation.validate(record);
         record.setId(id);
         return service.addOrUpdateRecord(record);
     }
 
     @DeleteMapping("/{id}")
-    public String deleteRecord(@PathVariable Long id) {
+    public ApplicationResponce deleteRecord(@PathVariable Long id) throws ServiceException {
         return  service.deleteRecord(id);
 
     }

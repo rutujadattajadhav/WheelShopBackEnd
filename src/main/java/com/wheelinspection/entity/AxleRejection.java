@@ -16,12 +16,12 @@ public class AxleRejection {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = " Axle no")
+    @Column(name = "axle_no")
     private String axleNo;
 
-    @Column(name = "Year of Mfg")
+    @Column(name = "year_of_mfg")
     private Integer yearOfMfg;
 
-    @Column(name = "Reason of Rejection Axle ")
+    @Column(name = "reason_of_rejection_axle")
     private String reasonOfRejectionAxle;
 }

@@ -1,16 +1,15 @@
 package com.wheelinspection.controller;
 
-import com.wheelinspection.entity.WheelPoh;
 import com.wheelinspection.entity.WheelPressOnDetail;
+import com.wheelinspection.handler.ServiceException;
+import com.wheelinspection.responce.ApplicationResponce;
 import com.wheelinspection.service.WheelPressOnDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/wheel-press-on-detail")
@@ -25,24 +24,24 @@ public class WheelPressOnDetailController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<WheelPressOnDetail> getRecordById(@PathVariable Long id) {
-        Optional<WheelPressOnDetail> record = service.getRecordById(id);
-        return record.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+    public ApplicationResponce getRecordById(@PathVariable Long id) throws ServiceException {
+        ApplicationResponce record = service.getRecordById(id);
+        return record;
     }
 
     @PostMapping
-    public WheelPressOnDetail createRecord(@RequestBody WheelPressOnDetail record) {
+    public ApplicationResponce createRecord(@RequestBody WheelPressOnDetail record) throws ServiceException {
         return service.createRecord(record);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<WheelPressOnDetail> updateRecord(@PathVariable Long id, @RequestBody WheelPressOnDetail updatedRecord) {
+    public WheelPressOnDetail updateRecord(@PathVariable Long id, @RequestBody WheelPressOnDetail updatedRecord) {
         WheelPressOnDetail record = service.updateRecord(id, updatedRecord);
-        return record != null ? ResponseEntity.ok(record) : ResponseEntity.notFound().build();
+        return record ;
     }
 
     @DeleteMapping("/{id}")
-    public String deleteRecord(@PathVariable Long id) {
+    public ApplicationResponce deleteRecord(@PathVariable Long id) throws ServiceException {
         return  service.deleteRecord(id);
 
     }

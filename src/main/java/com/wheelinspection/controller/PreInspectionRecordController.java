@@ -2,6 +2,8 @@ package com.wheelinspection.controller;
 
 import com.wheelinspection.entity.FinalInspectionOfWheel;
 import com.wheelinspection.entity.PreInspectionRecord;
+import com.wheelinspection.handler.ServiceException;
+import com.wheelinspection.responce.ApplicationResponce;
 import com.wheelinspection.service.PreInspectionRecordService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -25,24 +27,24 @@ public class PreInspectionRecordController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<PreInspectionRecord> getRecordById(@PathVariable Long id) {
-        Optional<PreInspectionRecord> record = service.getRecordById(id);
-        return record.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+    public ApplicationResponce getRecordById(@PathVariable Long id) throws ServiceException {
+        ApplicationResponce record = service.getRecordById(id);
+        return record;
     }
 
     @PostMapping
-    public PreInspectionRecord createRecord(@RequestBody PreInspectionRecord record) {
+    public ApplicationResponce createRecord(@RequestBody PreInspectionRecord record) throws ServiceException {
         return service.createRecord(record);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<PreInspectionRecord> updateRecord(@PathVariable Long id, @RequestBody PreInspectionRecord updatedRecord) {
-        PreInspectionRecord record = service.updateRecord(id, updatedRecord);
+    public ResponseEntity<ApplicationResponce> updateRecord(@PathVariable Long id, @RequestBody PreInspectionRecord updatedRecord) throws ServiceException {
+        ApplicationResponce record = service.updateRecord(id, updatedRecord);
         return record != null ? ResponseEntity.ok(record) : ResponseEntity.notFound().build();
     }
 
     @DeleteMapping("/{id}")
-    public String deleteRecord(@PathVariable Long id) {
+    public ApplicationResponce deleteRecord(@PathVariable Long id) throws ServiceException {
         return  service.deleteRecord(id);
 
     }

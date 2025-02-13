@@ -1,7 +1,8 @@
 package com.wheelinspection.controller;
 
-import com.wheelinspection.entity.WheelPoh;
 import com.wheelinspection.entity.WheelProfileAnalysis;
+import com.wheelinspection.handler.ServiceException;
+import com.wheelinspection.responce.ApplicationResponce;
 import com.wheelinspection.service.WheelProfileAnalysisService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -10,7 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/wheel-process-analysis")
@@ -25,13 +25,13 @@ public class WheelProfileAnalysisController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<WheelProfileAnalysis> getRecordById(@PathVariable Long id) {
-        Optional<WheelProfileAnalysis> record = service.getRecordById(id);
-        return record.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+    public ApplicationResponce getRecordById(@PathVariable Long id) throws ServiceException {
+        ApplicationResponce record = service.getRecordById(id);
+        return record;
     }
 
     @PostMapping
-    public WheelProfileAnalysis createRecord(@RequestBody WheelProfileAnalysis record) {
+    public ApplicationResponce createRecord(@RequestBody WheelProfileAnalysis record) throws ServiceException {
         return service.createRecord(record);
     }
 
@@ -42,7 +42,7 @@ public class WheelProfileAnalysisController {
     }
 
     @DeleteMapping("/{id}")
-    public String deleteRecord(@PathVariable Long id) {
+    public ApplicationResponce deleteRecord(@PathVariable Long id) throws ServiceException {
         return service.deleteRecord(id);
 
     }

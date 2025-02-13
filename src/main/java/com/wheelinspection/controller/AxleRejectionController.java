@@ -1,8 +1,11 @@
 package com.wheelinspection.controller;
 
 import com.wheelinspection.entity.AxleRejection;
-import com.wheelinspection.entity.BreakdownHistory;
+import com.wheelinspection.handler.ServiceException;
+import com.wheelinspection.responce.ApplicationResponce;
 import com.wheelinspection.service.AxleRejectionService;
+//import com.wheelinspection.validation.axleRejectionValidation.SaveValidation;
+import com.wheelinspection.validation.axleRejectionValidation.SaveValidation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -12,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/api/axle-rejection")
 public class AxleRejectionController {
@@ -19,38 +23,46 @@ public class AxleRejectionController {
     @Autowired
     private AxleRejectionService service;
 
+    @Autowired
+    private SaveValidation saveValidation;
+
     @GetMapping("/getAllRecord")
     public List<AxleRejection> getAllRecords() {
         return service.getAllRecords();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<AxleRejection> getRecordById(@PathVariable Long id) {
-        Optional<AxleRejection> record = service.getRecordById(id);
+    public ResponseEntity<ApplicationResponce> getRecordById(@PathVariable Long id) throws ServiceException, Exception {
+        Optional<ApplicationResponce> record = Optional.ofNullable(service.getRecordById(id));
         return record.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
+
     @PostMapping
-    public AxleRejection createRecord(@RequestBody AxleRejection record) {
+    public ApplicationResponce createRecord(@RequestBody AxleRejection record) throws Exception {
+        saveValidation.validate(record);
         return service.createRecord(record);
+
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<AxleRejection> updateRecord(@PathVariable Long id, @RequestBody AxleRejection updatedRecord) {
-        AxleRejection record = service.updateRecord(id, updatedRecord);
+    public ResponseEntity<ApplicationResponce> updateRecord(@PathVariable Long id, @RequestBody AxleRejection updatedRecord) throws Exception {
+        saveValidation.validate(updatedRecord);
+        ApplicationResponce record = service.updateRecord(id, updatedRecord);
+
         return record != null ? ResponseEntity.ok(record) : ResponseEntity.notFound().build();
     }
 
     @DeleteMapping("/{id}")
-    public String deleteRecord(@PathVariable Long id) {
+    public ApplicationResponce deleteRecord(@PathVariable Long id) throws Exception {
        return service.deleteRecord(id);
 
     }
 
     @GetMapping
-    public Page<AxleRejection> getBreakdowns(@RequestParam(defaultValue = "") String search,
-                                                @RequestParam(defaultValue = "0") int page,
-                                                @RequestParam(defaultValue = "10") int size) {
+    public Page<AxleRejection> getBreakdowns(@RequestParam() String search,
+                                                @RequestParam() int page,
+                                                @RequestParam() int size) {
         return service.getPaginatedData(search, PageRequest.of(page, size));
     }
 }

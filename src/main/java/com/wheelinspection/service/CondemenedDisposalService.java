@@ -2,7 +2,9 @@ package com.wheelinspection.service;
 
 import com.wheelinspection.entity.BearingRejectionData;
 import com.wheelinspection.entity.CondemenedDisposal;
+import com.wheelinspection.handler.ServiceException;
 import com.wheelinspection.repository.CondemenedDisposalRepository;
+import com.wheelinspection.responce.ApplicationResponce;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -19,25 +21,56 @@ public class CondemenedDisposalService {
         return repository.findAll();
     }
 
-    public Optional<CondemenedDisposal> getRecordById(Long id) {
-        return repository.findById(id);
+    public ApplicationResponce getRecordById(Long id) throws ServiceException {
+        if (repository.existsById(id)) {
+            Optional<CondemenedDisposal> condemenedDisposal = repository.findById(id);
+            if (condemenedDisposal.isPresent()) {
+                ApplicationResponce applicationResponce = new ApplicationResponce();
+                applicationResponce.setData(condemenedDisposal);
+                return applicationResponce;
+            } else {
+                throw new ServiceException("record not get successfully", 90);
+            }
+        }throw new ServiceException("record not found",90);
+
     }
 
-    public CondemenedDisposal createRecord(CondemenedDisposal record) {
-        return repository.save(record);
+    public ApplicationResponce createRecord(CondemenedDisposal record) throws ServiceException {
+        CondemenedDisposal condemenedDisposal= repository.save(record);
+        if(condemenedDisposal!=null){
+            ApplicationResponce applicationResponce  =new ApplicationResponce();
+            applicationResponce.setData(condemenedDisposal);
+            return applicationResponce;
+        }else{
+            throw new ServiceException("not save successfully",203);
+        }
     }
 
-    public CondemenedDisposal updateRecord(Long id, CondemenedDisposal updatedRecord) {
+    public ApplicationResponce updateRecord(Long id, CondemenedDisposal updatedRecord) throws ServiceException {
         if (repository.existsById(id)) {
             updatedRecord.setId(id);
-            return repository.save(updatedRecord);
+            CondemenedDisposal condemenedDisposal = repository.save(updatedRecord);
+            if(condemenedDisposal!=null){
+                ApplicationResponce applicationResponce  =new ApplicationResponce();
+                applicationResponce.setData(condemenedDisposal);
+                return applicationResponce;
+            }else{
+                throw new ServiceException("not update successfully",203);
+            }
         }
-        return null;
+        throw new ServiceException("Record not found",190);
     }
 
-    public String deleteRecord(Long id) {
-        repository.deleteById(id);
-        return "delete successfully";
+    public ApplicationResponce deleteRecord(Long id) throws ServiceException {
+        if(repository.existsById(id)){
+            repository.deleteById(id);
+            ApplicationResponce applicationResponce =new ApplicationResponce();
+            applicationResponce.setData("delete successfully");
+            return applicationResponce;
+        }else{
+            throw new ServiceException("Record not found",87);
+        }
+
     }
 
     public Page<CondemenedDisposal> getPaginatedData(String search, Pageable pageable) {

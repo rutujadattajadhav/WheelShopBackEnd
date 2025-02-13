@@ -1,7 +1,8 @@
 package com.wheelinspection.controller;
 
-import com.wheelinspection.entity.BearingRejectionData;
 import com.wheelinspection.entity.CondemenedDisposal;
+import com.wheelinspection.handler.ServiceException;
+import com.wheelinspection.responce.ApplicationResponce;
 import com.wheelinspection.service.CondemenedDisposalService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -10,7 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/condemened-disposal")
@@ -25,24 +25,25 @@ public class CondemenedDisposalController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<CondemenedDisposal> getRecordById(@PathVariable Long id) {
-        Optional<CondemenedDisposal> record = service.getRecordById(id);
-        return record.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+    public ApplicationResponce getRecordById(@PathVariable Long id) throws ServiceException {
+        ApplicationResponce record = service.getRecordById(id);
+        return record;
     }
 
     @PostMapping
-    public CondemenedDisposal createRecord(@RequestBody CondemenedDisposal record) {
+    public ApplicationResponce createRecord(@RequestBody CondemenedDisposal record) throws ServiceException {
         return service.createRecord(record);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<CondemenedDisposal> updateRecord(@PathVariable Long id, @RequestBody CondemenedDisposal updatedRecord) {
-        CondemenedDisposal record = service.updateRecord(id, updatedRecord);
+    public ResponseEntity<ApplicationResponce> updateRecord(@PathVariable Long id, @RequestBody CondemenedDisposal updatedRecord) throws ServiceException {
+
+        ApplicationResponce record = service.updateRecord(id, updatedRecord);
         return record != null ? ResponseEntity.ok(record) : ResponseEntity.notFound().build();
     }
 
     @DeleteMapping("/{id}")
-    public String deleteRecord(@PathVariable Long id) {
+    public ApplicationResponce deleteRecord(@PathVariable Long id) throws ServiceException {
        return service.deleteRecord(id);
 
     }
