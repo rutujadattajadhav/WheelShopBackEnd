@@ -59,9 +59,9 @@ public class BreakdownHistoryController {
     }
 
     @GetMapping
-    public Page<BreakdownHistory> getBreakdowns(@RequestParam(defaultValue = "") String search,
-                                                @RequestParam(defaultValue = "0") int page,
-                                                @RequestParam(defaultValue = "10") int size) {
+    public Page<BreakdownHistory> getBreakdowns(@RequestParam() String search,
+                                                @RequestParam() int page,
+                                                @RequestParam() int size) {
         return service.getPaginatedData(search, PageRequest.of(page, size));
     }
 }
