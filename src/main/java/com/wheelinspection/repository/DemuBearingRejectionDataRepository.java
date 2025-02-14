@@ -13,7 +13,7 @@ import org.springframework.stereotype.Repository;
 public interface DemuBearingRejectionDataRepository extends JpaRepository<DemuBearingRejectionData, Long> {
 
 
-    @Query(value = "SELECT * FROM demu_bearing_rejection_data WHERE id LIKE CONCAT('%', :search, '%')", nativeQuery = true)
+    @Query(value = "SELECT * FROM demu_bearing_rejection_data WHERE date LIKE CONCAT('%', :search, '%')", nativeQuery = true)
     Page<DemuBearingRejectionData> searchByVehicleNative(@Param("search") String search, Pageable pageable);
 
 

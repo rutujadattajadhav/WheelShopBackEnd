@@ -12,7 +12,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface BearingRejectionDataRepository extends JpaRepository<BearingRejectionData, Long> {
 
-    @Query(value = "SELECT * FROM bearing_rejection_data WHERE id LIKE CONCAT('%', :search, '%')", nativeQuery = true)
+    @Query(value = "SELECT * FROM bearing_rejection_data WHERE bearing_no LIKE CONCAT('%', :search, '%')", nativeQuery = true)
     Page<BearingRejectionData> searchByVehicleNative(@Param("search") String search, Pageable pageable);
 
 
