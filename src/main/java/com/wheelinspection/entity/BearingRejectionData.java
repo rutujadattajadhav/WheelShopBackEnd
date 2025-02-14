@@ -21,28 +21,28 @@ public class BearingRejectionData {
     @Column(name = "MONTH")
     private String month;
 
-    @Column(name = "BEARING TYPE")
+    @Column(name = "bearing_type")
     private String bearingType;
 
-    @Column(name = "MFG NO")
+    @Column(name = "mfg_no")
     private String mfgNo;
 
     @Column(name = "MAKE")
     private String make;
 
-    @Column(name = "LIFE IN MONTH")
+    @Column(name = "life_in_month")
     private Integer lifeInMonth;
 
-    @Column(name = "LIFE IN  YEAR")
+    @Column(name = "life_in__year")
     private Integer lifeInYear;
 
-    @Column(name = "REASON FOR REJECTION")
+    @Column(name = "reason_for_rejection")
     private String reasonForRejection;
 
-    @Column(name = "TOTAL  INSPECTED")
+    @Column(name = "total__inspected")
     private String totalInspected;
 
-    @Column(name = "Rejection percentage")
+    @Column(name = "rejection_percentage")
     private String rejectionPercentage;
 
     @Column(name = "COUNT")

@@ -56,9 +56,9 @@ public class MachineController {
     }
 
     @GetMapping
-    public Page<Machine > getMachines(@RequestParam(defaultValue = "") String search,
-                                                @RequestParam(defaultValue = "0") int page,
-                                                @RequestParam(defaultValue = "10") int size) {
+    public Page<Machine > getMachines(@RequestParam() String search,
+                                                @RequestParam() int page,
+                                                @RequestParam() int size) {
         return machineService.getPaginatedData(search, PageRequest.of(page, size));
     }
 }

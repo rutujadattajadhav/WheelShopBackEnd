@@ -11,7 +11,7 @@ import org.springframework.data.repository.query.Param;
 public interface MachineRepository extends JpaRepository<Machine, Long> {
 
 
-    @Query(value = "SELECT * FROM machines WHERE plant_no LIKE CONCAT('%', :search, '%')", nativeQuery = true)
+    @Query(value = "SELECT * FROM machines WHERE id LIKE CONCAT('%', :search, '%')", nativeQuery = true)
     Page<Machine> searchByPlantNnoNative(@Param("search") String search, Pageable pageable);
 
     Page<Machine> findAll(Pageable pageable);
