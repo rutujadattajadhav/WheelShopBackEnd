@@ -1,105 +1,62 @@
 package com.wheelinspection.entity;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Data;
 
 @Entity
 @Table(name = "demu_bearing_rejection_data")
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
+@Data
 public class DemuBearingRejectionData {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    @Column(name = "Date")
+    @Column(name = "date", length = 255, nullable = false)
     private String date;
 
-    @Column(name = "MONTH")
-    private String month;
+    @Column(name = "month_", columnDefinition = "TEXT")
+    private String monthData;
 
-    @Column(name = "MFG NO")
+    @Column(name = "mfg_no", length = 50)
     private String mfgNo;
 
-    @Column(name = "MAKE")
+    @Column(name = "make", length = 255)
     private String make;
 
-    @Column(name = "LIFE IN MONTH")
-    private Integer lifeInMonth;
+    @Column(name = "life_in_month_", columnDefinition = "TEXT")
+    private String lifeInMonthData;
 
-    @Column(name = "LIFE IN  YEAR")
-    private Double lifeInYear;
+    @Column(name = "life_in_year_", columnDefinition = "TEXT")
+    private String lifeInYearData;
 
-    @Column(name = "REASON FOR REJECTION")
+    @Column(name = "reason_for_rejection", columnDefinition = "TEXT")
     private String reasonForRejection;
 
-    @Column(name = "TOTAL  INSPECTED")
+    @Column(name = "total_inspected", columnDefinition = "TEXT")
     private String totalInspected;
 
-    @Column(name = "Rejection percentage")
+    @Column(name = "rejection_percentage_", columnDefinition = "TEXT")
     private String rejectionPercentage;
 
-    @Column(name = "COUNT")
+    @Column(name = "count", length = 255)
     private String count;
 
-    // Unknown columns
-    @Column(name = "MyUnknownColumn")
-    private String myUnknownColumn;
+    @Column(name = "life_in_month")
+    private Integer lifeInMonth;
 
-    @Column(name = "MyUnknownColumn_[0]")
-    private String myUnknownColumn0;
+    @Column(name = "life_in_year")
+    private Double lifeInYear;
 
-    @Column(name = "MyUnknownColumn_[1]")
-    private String myUnknownColumn1;
+    @Column(name = "mfg_no_alt", length = 255)
+    private String mfgNoAlt;
 
-    @Column(name = "MyUnknownColumn_[2]")
-    private String myUnknownColumn2;
+    @Column(name = "month_alt", length = 255)
+    private String monthAlt;
 
-    @Column(name = "MyUnknownColumn_[3]")
-    private String myUnknownColumn3;
+    @Column(name = "reason_for_rejection_alt", length = 255)
+    private String reasonForRejectionAlt;
 
-    @Column(name = "MyUnknownColumn_[4]")
-    private String myUnknownColumn4;
+    @Column(name = "rejection_percentage_alt", length = 255)
+    private String rejectionPercentageAlt;
 
-    @Column(name = "MyUnknownColumn_[5]")
-    private String myUnknownColumn5;
-
-    @Column(name = "MyUnknownColumn_[6]")
-    private String myUnknownColumn6;
-
-    @Column(name = "MyUnknownColumn_[7]")
-    private String myUnknownColumn7;
-
-    @Column(name = "MyUnknownColumn_[8]")
-    private String myUnknownColumn8;
-
-    @Column(name = "MyUnknownColumn_[9]")
-    private String myUnknownColumn9;
-
-    @Column(name = "MyUnknownColumn_[10]")
-    private String myUnknownColumn10;
-
-    @Column(name = "MyUnknownColumn_[11]")
-    private String myUnknownColumn11;
-
-    @Column(name = "MyUnknownColumn_[12]")
-    private String myUnknownColumn12;
-
-    @Column(name = "MyUnknownColumn_[13]")
-    private String myUnknownColumn13;
-
-    @Column(name = "MyUnknownColumn_[14]")
-    private String myUnknownColumn14;
-
-    @Column(name = "MyUnknownColumn_[15]")
-    private String myUnknownColumn15;
-
-    @Column(name = "MyUnknownColumn_[16]")
-    private String myUnknownColumn16;
-
-    @Column(name = "MyUnknownColumn_[17]")
-    private String myUnknownColumn17;
+    @Column(name = "total_inspected_alt", length = 255)
+    private String totalInspectedAlt;
 }

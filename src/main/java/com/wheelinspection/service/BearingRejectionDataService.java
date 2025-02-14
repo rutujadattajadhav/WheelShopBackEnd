@@ -45,7 +45,7 @@ public class BearingRejectionDataService {
 
     public ApplicationResponce updateRecord(Long id, BearingRejectionData updatedRecord) throws ServiceException {
         if (repository.existsById(id)) {
-            updatedRecord.setId(id);
+            updatedRecord.setBearingNo(id+"");
             BearingRejectionData bearingRejectionData = repository.save(updatedRecord);
             if(bearingRejectionData!=null){
                 ApplicationResponce applicationResponce =new ApplicationResponce();

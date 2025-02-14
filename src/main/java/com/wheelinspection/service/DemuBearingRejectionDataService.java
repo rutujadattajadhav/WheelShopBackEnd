@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -47,7 +49,7 @@ public class DemuBearingRejectionDataService {
 
     public ApplicationResponce updateRecord(Long id, DemuBearingRejectionData updatedRecord) throws ServiceException {
         if (repository.existsById(id)) {
-            updatedRecord.setId(id);
+            //updatedRecord.setDate(new Date());
             DemuBearingRejectionData demuBearingRejectionData = repository.save(updatedRecord);
             if(demuBearingRejectionData!=null){
                 ApplicationResponce applicationResponce =new ApplicationResponce();

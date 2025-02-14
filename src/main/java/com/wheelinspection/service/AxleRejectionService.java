@@ -46,7 +46,7 @@ public class AxleRejectionService {
 
     public ApplicationResponce updateRecord(Long id, AxleRejection updatedRecord) throws Exception {
         if (repository.existsById(id)) {
-            updatedRecord.setId(id);
+            updatedRecord.setAxleNo(id+"");
             AxleRejection axleRejection = repository.save(updatedRecord);
             if(axleRejection!=null){
                 ApplicationResponce applicationResponce  =new ApplicationResponce();
